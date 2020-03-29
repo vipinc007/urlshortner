@@ -19,7 +19,7 @@ class Dataholder {
 
   static getApiUrl() {
     return process.env.NODE_ENV === "development"
-      ? "https://urlshortner007api.herokuapp.com/" //"http://localhost:3002/"
+      ? "http://localhost:3002/"
       : "https://urlshortner007api.herokuapp.com/";
   }
 
