@@ -8,9 +8,7 @@ import Shortenurl from "./components/shortenurl";
 function App() {
   return (
     <React.Fragment>
-      {/* <Header /> */}
       <Shortenurl />
-      {/* <Footer /> */}
     </React.Fragment>
   );
 }

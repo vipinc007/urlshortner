@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { apiurl } from "../settings/sitesettings.js";
+import Dataholder from "../common/dataholder";
+
 class Shortenurl extends Component {
   state = {
     url: "",
@@ -9,21 +10,22 @@ class Shortenurl extends Component {
     baseurl: "",
     ukey: null
   };
-  componentDidMount() {
-    this.setState({ baseurl: window.location.origin.toString() });
+
+  async componentDidMount() {
+    this.setState({ baseurl: Dataholder.getBaseUrl() });
+    if (Dataholder.getIpAddress() == null) {
+      const ipresponse = await fetch("https://api.ipify.org/?format=json");
+      const ipjson = await ipresponse.json();
+      //console.log(ipjson.ip);
+      let ipaddress = ipjson.ip;
+      Dataholder.setIpAddress(ipaddress);
+    }
   }
 
   render() {
     return (
       <React.Fragment>
         <h1 className="mt-5">Enter you url</h1>
-        {/* <p className="lead">
-            Pin a fixed-height footer to the bottom of the viewport in desktop
-            browsers with this custom HTML and CSS. A fixed navbar has been
-            added with <code>padding-top: 60px;</code> on the{" "}
-            <code>body &gt; .container</code>.
-          </p> */}
-
         <div className="input-group mb-3">
           <input
             type="text"
@@ -45,11 +47,18 @@ class Shortenurl extends Component {
             </button>
           </div>
         </div>
-
+        {this.state.status === 1 && (
+          <React.Fragment>
+            <div className="alert alert-info">
+              <strong>Info !</strong> We are shortening your url. Please wait
+              ....
+            </div>
+          </React.Fragment>
+        )}
         {this.state.status == 2 && (
           <React.Fragment>
             <div className="alert alert-success">
-              <strong>Success!</strong> Your short url is below.
+              <strong>Success!</strong> Your short url is generated.
             </div>
             <input
               type="text"
@@ -69,28 +78,17 @@ class Shortenurl extends Component {
       </React.Fragment>
     );
   }
-  generateRandomString(len, arr) {
-    var ans = "";
-    for (var i = len; i > 0; i--) {
-      ans += arr[Math.floor(Math.random() * arr.length)];
-    }
-    return ans;
-  }
+
   generateShortUrl = () => {
-    let randstring = this.generateRandomString(
-      10,
-      "1234567890abcdefghijklmnopqrsABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    );
+    let randstring = Dataholder.generateRandomString(10);
     let surl = this.state.baseurl + "/a/" + randstring;
     this.setState({ shorturl: surl, ukey: randstring });
-    //console.log(surl);
   };
   async handleChange(e) {
     await this.setState({
       [e.target.name]: e.target.value
     });
     await this.generateShortUrl();
-    //console.log(this.state);
   }
   handleShortenurl = () => {
     this.setState({
@@ -109,10 +107,9 @@ class Shortenurl extends Component {
         },
         body: JSON.stringify(data)
       };
-      const response = await fetch(apiurl + "urls", config);
+      const response = await fetch(Dataholder.getApiUrl() + "urls", config);
       if (response.ok) {
         const ores = await response.json();
-        // console.log(ores);
         this.setState({
           status: 2
         });

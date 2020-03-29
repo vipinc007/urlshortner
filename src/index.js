@@ -9,23 +9,17 @@ import Urlprocessor from "./pages/urlprocessor";
 import Notfound from "./pages/notfound";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import Urlsettings from "./pages/urlsettings";
 import * as serviceWorker from "./serviceWorker";
-// import "bootstrap/dist/css/bootstrap.css";
-// import $ from "jquery";
-// import Popper from "popper.js";
-// import "bootstrap/dist/js/bootstrap.js";
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById("root")
-// );
 
 const routing = (
   <Router>
     <Header />
-    <main role="main" className="container">
+    <main
+      role="main"
+      className="container"
+      style={{ height: 500, overflow: "auto" }}
+    >
       <div className="row">&nbsp;</div>
       <div className="row">&nbsp;</div>
       <Switch>
@@ -33,6 +27,7 @@ const routing = (
         <Route exact path="/urls" component={Urls} />
         <Route exact path="/a/:ukey" component={Urlprocessor} />
         <Route exact path="/analysis/:id" component={Analysis} />
+        <Route exact path="/settings" component={Urlsettings} />
         <Route component={Notfound} />
       </Switch>
     </main>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Dataholder from "../common/dataholder";
 
 class Footer extends Component {
   state = {};
@@ -8,7 +9,12 @@ class Footer extends Component {
         <footer className="footer">
           <div className="container">
             <span className="text-muted">
-              @ This is a test project for instacar by Vipin cheriyanveetil
+              @ A test project by Vipin cheriyanveetil.
+              {Dataholder.getIpAddress() !== "" && (
+                <React.Fragment>
+                  Your ip is {Dataholder.getIpAddress()}
+                </React.Fragment>
+              )}
             </span>
           </div>
         </footer>

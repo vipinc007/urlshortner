@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { apiurl } from "../settings/sitesettings.js";
+import Dataholder from "../common/dataholder";
 
 class Urls extends Component {
   state = {
@@ -9,17 +9,16 @@ class Urls extends Component {
     loading: 1
   };
   async componentDidMount() {
-    // console.log(apiurl);
     this.loadUrls();
   }
   async loadUrls() {
     this.setState({ urls: [] });
     this.setState({ loading: 1 });
 
-    const response = await fetch(apiurl + "urls");
+    const response = await fetch(Dataholder.getApiUrl() + "urls");
     const json = await response.json();
     this.setState({ urls: json });
-    this.setState({ baseurl: window.location.origin.toString() });
+    this.setState({ baseurl: Dataholder.getBaseUrl() });
     this.setState({ loading: 0 });
   }
   render() {
@@ -50,7 +49,7 @@ class Urls extends Component {
             <thead>
               <tr>
                 <th>Url</th>
-                <th>Short Url</th>
+
                 <th>Created Date</th>
                 <th></th>
               </tr>
@@ -58,8 +57,9 @@ class Urls extends Component {
             <tbody>
               {this.state.urls.map(url => (
                 <tr key={url.id}>
-                  <td>{url.url}</td>
                   <td>
+                    {url.url}
+                    <br />
                     <Link
                       to={"/a/" + url.ukey}
                       className="nav-link"
@@ -68,6 +68,7 @@ class Urls extends Component {
                       {this.state.baseurl}/a/{url.ukey}
                     </Link>
                   </td>
+
                   <td>{url.createddate}</td>
                   <td>
                     <Link
