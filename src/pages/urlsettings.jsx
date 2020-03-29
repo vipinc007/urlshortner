@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { apiurl } from "../settings/sitesettings001.js";
+import Dataholder from "../common/dataholder";
 
 class Urlsettings extends Component {
   state = {
@@ -14,7 +14,7 @@ class Urlsettings extends Component {
     this.setState({ ratelimit: 1 });
     this.setState({ loading: 1 });
 
-    const response = await fetch(apiurl + "settings");
+    const response = await fetch(Dataholder.getApiUrl() + "settings");
     const json = await response.json();
 
     this.setState({ ratelimit: json[0].ratelimit });
@@ -98,7 +98,7 @@ class Urlsettings extends Component {
         },
         body: JSON.stringify(data)
       };
-      const response = await fetch(apiurl + "settings", config);
+      const response = await fetch(Dataholder.getApiUrl() + "settings", config);
       if (response.ok) {
         const ores = await response.json();
         this.setState({

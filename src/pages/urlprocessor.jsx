@@ -11,7 +11,6 @@ class Urlprocessor extends Component {
 
     const response = await fetch(Dataholder.getApiUrl() + "url/" + urlid);
     const json = await response.json();
-    //console.log(json);
     let rurl = json[0].url;
     let rurlid = json[0].id;
 
